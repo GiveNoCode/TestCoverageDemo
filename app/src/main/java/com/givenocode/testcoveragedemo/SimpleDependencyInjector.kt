@@ -1,28 +1,29 @@
 package com.givenocode.testcoveragedemo
 
 import android.content.Context
+import com.givenocode.data.LocalDataSource
+import com.givenocode.data.NetworkDataSource
 import com.givenocode.device.AndroidDeviceManager
 import com.givenocode.domain.DataInteractor
-import com.givenocode.domain.DataSource
 import com.givenocode.domain.DeviceManager
 
 object SimpleDependencyInjector {
 
     lateinit var context: Context
 
-    private val dataSource by lazy {
-        object : DataSource {
-            override suspend fun getData(): String {
-                return "stub data"
-            }
-        }
+    private val networkDataSource by lazy {
+        NetworkDataSource()
     }
 
-    private val deviceManager:DeviceManager by lazy {
+    private val localDataSource by lazy {
+        LocalDataSource()
+    }
+
+    private val deviceManager: DeviceManager by lazy {
         AndroidDeviceManager(context)
     }
 
     val dataInteractor by lazy {
-        DataInteractor(dataSource, dataSource, deviceManager)
+        DataInteractor(localDataSource, networkDataSource, deviceManager)
     }
 }
