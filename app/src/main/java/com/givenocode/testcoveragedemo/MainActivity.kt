@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        SimpleDependencyInjector.context = applicationContext
+
         downloadButton.setOnClickListener {
             progress.visibility = View.VISIBLE
             downloadButton.isEnabled = false

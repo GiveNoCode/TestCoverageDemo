@@ -1,10 +1,14 @@
 package com.givenocode.testcoveragedemo
 
+import android.content.Context
+import com.givenocode.device.AndroidDeviceManager
 import com.givenocode.domain.DataInteractor
 import com.givenocode.domain.DataSource
 import com.givenocode.domain.DeviceManager
 
 object SimpleDependencyInjector {
+
+    lateinit var context: Context
 
     private val dataSource by lazy {
         object : DataSource {
@@ -14,16 +18,8 @@ object SimpleDependencyInjector {
         }
     }
 
-    private val deviceManager by lazy {
-        object : DeviceManager {
-            override fun getTimeStamp(): Long {
-                return System.currentTimeMillis()
-            }
-
-            override fun isOnline(): Boolean {
-                return true
-            }
-        }
+    private val deviceManager:DeviceManager by lazy {
+        AndroidDeviceManager(context)
     }
 
     val dataInteractor by lazy {
