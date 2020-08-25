@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TestCoverageDemo</string>
+    <string name="download">Load Data</string>
+    <string name="offline_label">Offline</string>
 </resources>
