@@ -27,7 +27,7 @@ class NetworkDataSource : DataSource {
         if (response.isSuccessful) {
             response.body!!.string().replace("<p>", "").replace("</p>", "")
         } else {
-            throw IOException("Network error")
+            throw IOException("Network Error")
         }
     }
 
