@@ -34,3 +34,16 @@ jacocoTestReport {
         }
     }
 }
+
+jacocoTestCoverageVerification {
+    dependsOn(test)
+    violationRules {
+        rule {
+            limit {
+                minimum = 1
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification

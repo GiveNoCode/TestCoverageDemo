@@ -71,3 +71,20 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
         }
     }
 }
+
+task jacocoTestCoverageVerification(type: JacocoCoverageVerification, dependsOn: 'testDebugUnitTest') {
+    group = 'Verification'
+    sourceDirectories.setFrom jacocoTestReport.sourceDirectories
+    classDirectories.setFrom jacocoTestReport.classDirectories
+    executionData.setFrom jacocoTestReport.executionData
+
+    violationRules {
+        rule {
+            limit {
+                minimum = 1
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
