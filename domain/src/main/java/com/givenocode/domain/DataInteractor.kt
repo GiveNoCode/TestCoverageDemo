@@ -1,5 +1,6 @@
 package com.givenocode.domain
 
+import com.givenocode.domain.model.Data
 import java.io.IOException
 
 class DataInteractor (

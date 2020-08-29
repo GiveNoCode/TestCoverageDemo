@@ -1,4 +1,4 @@
-package com.givenocode.domain
+package com.givenocode.domain.model
 
 data class Data(
     val content: String,

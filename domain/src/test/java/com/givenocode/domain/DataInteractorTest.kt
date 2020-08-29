@@ -1,13 +1,14 @@
 package com.givenocode.domain
 
+import com.givenocode.domain.model.Data
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
@@ -28,7 +29,7 @@ class DataInteractorTest {
 
     @Before
     fun setUp() =
-        MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
+        MockKAnnotations.init(this, relaxUnitFun = true)
 
     @Test
     fun `happy case`() = runBlocking {

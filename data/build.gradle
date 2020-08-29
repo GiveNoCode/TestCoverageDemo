@@ -1,6 +1,11 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = jacoco_version
+}
 
 android {
     compileSdkVersion 30
@@ -39,4 +44,30 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+    group = 'Verification'
+
+    final fileFilter = [
+            '**/R.class', '**/R$*.class',
+            '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*',
+            'android/**/*.*'
+    ]
+    final kotlinTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
+    final javacTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
+    final mainSrc = "${projectDir}/src/main/java"
+
+    sourceDirectories.setFrom files([mainSrc])
+    classDirectories.setFrom files([kotlinTree, javacTree])
+    executionData.setFrom fileTree(dir: buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
+    ])
+
+    reports {
+        html {
+            enabled = true
+            destination file("${buildDir}/reports/jacoco/html")
+        }
+    }
 }

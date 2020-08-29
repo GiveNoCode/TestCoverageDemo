@@ -1,5 +1,10 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = jacoco_version
+}
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -11,3 +16,21 @@ dependencies {
 
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
+
+jacocoTestReport {
+    dependsOn(test)
+
+    final fileFilter = ['com/givenocode/domain/model/**']
+    afterEvaluate {
+        classDirectories.setFrom classDirectories.files.collect {
+            fileTree(dir: it, excludes: fileFilter)
+        }
+    }
+
+    reports {
+        html{
+            enabled true
+            destination file("${buildDir}/reports/jacoco/html")
+        }
+    }
+}

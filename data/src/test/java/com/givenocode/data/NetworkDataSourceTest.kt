@@ -56,7 +56,7 @@ class NetworkDataSourceTest {
 
         try {
             // when
-            val result = networkDataSource.getData()
+            networkDataSource.getData()
 
             // then
             fail("should fail")

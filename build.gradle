@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = "1.4.0"
+    ext.jacoco_version = "0.8.5"
     repositories {
         google()
         jcenter()
@@ -18,6 +19,42 @@ allprojects {
     repositories {
         google()
         jcenter()
+    }
+}
+
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = jacoco_version
+}
+
+task jacocoFullReport(type: JacocoReport, group: 'Coverage reports') {
+    group = 'Verification'
+    description = 'Generate Jacoco aggregate report for all modules'
+
+    def projects = subprojects.findAll { it.getTasksByName("jacocoTestReport", false) }
+
+    //noinspection GrUnresolvedAccess
+    dependsOn(projects.jacocoTestReport)
+
+    final source = files(projects.jacocoTestReport.sourceDirectories)
+
+    additionalSourceDirs.setFrom source
+    sourceDirectories.setFrom source
+
+    classDirectories.setFrom files(projects.jacocoTestReport.classDirectories)
+    executionData.setFrom files(projects.jacocoTestReport.executionData)
+
+    reports {
+        html {
+            enabled true
+            destination file("${buildDir}/reports/jacoco/html")
+        }
+    }
+
+    doFirst {
+        //noinspection GroovyAssignabilityCheck
+        executionData.setFrom files(executionData.findAll { it.exists() })
     }
 }
 
